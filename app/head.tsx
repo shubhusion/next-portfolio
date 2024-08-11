@@ -18,7 +18,6 @@ export default function Head() {
       <meta name="apple-mobile-web-app-title" content="Portfolio | Shubham Sharma - Full Stack Developer" />
       <link rel="icon" href="/favicon.ico" />
       <title>Portfolio | Shubham Sharma - Full Stack Developer</title>
-      <script defer src="https://cloud.umami.is/script.js" data-website-id="9a1a573a-0c1d-428c-b2a0-32c5caadd155"></script>
     </>
   )
 }
