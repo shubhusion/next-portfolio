@@ -1,4 +1,6 @@
 'use client';
+
+import dynamic from 'next/dynamic';
 import { data } from "@/types/main";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
@@ -8,8 +10,10 @@ import Socials from "@/components/Socials";
 import Experiences from "@/components/experiences/Experiences";
 import Contact from "@/components/Contact";
 import CallToAction from "@/components/CallToAction";
-import Header from "./Header";
 import Footer from "./Footer";
+
+// Dynamically import the Header component with SSR disabled
+const Header = dynamic(() => import('./Header'), { ssr: false });
 
 interface Props {
     data: data,
@@ -32,4 +36,4 @@ const HomePage = ({ data }: Props) => {
     )
 }
 
-export default HomePage
+export default HomePage;

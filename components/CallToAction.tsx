@@ -27,7 +27,7 @@ const CallToAction = () => {
                 </div>
             </div>
             <div className="w-full md:w-1/2 h-40 md:h-52 lg:w-96 mb-4 md:mb-0 mx-auto rounded-lg bg-white dark:bg-grey-900">
-                <Image alt="Fork this template on Github" quality={100} width={1000} height={1000} className="w-full h-full mt-2 object-cover object-top rounded-lg" src={theme === "dark" ? "/portfolio-fork-dark.png" : "/portfolio-fork.png"} />
+            <Image alt="Fork this template on Github" quality={100} width={1000} height={1000} className="w-full h-full mt-2 object-cover object-top rounded-lg" src={theme === "dark" ? "/portfolio-fork-dark.png" : "/portfolio-fork.png"} priority/>
             </div>
             {/* <div className="absolute -bottom-10 -right-6 h-72 w-96 rounded-lg bg-white"></div> */}
         </SectionWrapper >
