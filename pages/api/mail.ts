@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import brevo from "@getbrevo/brevo";
+import * as brevo from '@getbrevo/brevo';
 
 type Data = {
     message: string;
@@ -9,37 +9,48 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<Data>
 ) {
-    if (req.method === "POST") {
-        const {
-            name,
-            email,
-            message,
-        }: { name: string; email: string; message: string } = req.body;
+    if (req.method !== "POST") {
+        return res.status(405).json({ message: "Method not allowed." });
+    }
 
-        // Initialize Brevo API and configure the API key directly through environment variable
-        const apiInstance = new brevo.TransactionalEmailsApi();
+    const { name, email, message } = req.body;
 
-        // Set up the email data
-        const sendSmtpEmail = new brevo.SendSmtpEmail({
-            subject: `${name.toUpperCase()} sent you a message from Portfolio`,
-            htmlContent: `<html><body><p>Name: ${name}</p><p>Email: ${email}</p><p>Message: ${message}</p></body></html>`,
-            sender: { email: process.env.MAIL_FROM as string },
-            to: [{ email: process.env.MAIL_TO as string }],
-            replyTo: { email: process.env.MAIL_FROM as string },
-            headers: { "X-Mailin-custom": "unique-id-1234" },
-            params: { name, email, message }
-        });
+    if (!name || !email || !message) {
+        return res.status(400).json({ message: "Missing required fields." });
+    }
 
-        try {
-            // Send the email
-            const data = await apiInstance.sendTransacEmail(sendSmtpEmail);
-            console.log('API called successfully. Returned data: ' + JSON.stringify(data));
-            res.status(200).json({ message: "Your message was sent successfully." });
-        } catch (err) {
-            console.error(err);
-            res.status(500).json({ message: `There was an error sending your message. ${err}` });
-        }
-    } else {
-        res.status(405).json({ message: "Method not allowed." });
+    const apiInstance = new brevo.TransactionalEmailsApi();
+    
+    const apiKey = process.env.BREVO_API_KEY;
+    if (!apiKey) {
+        console.error('BREVO_API_KEY is not set');
+        return res.status(500).json({ message: "Server configuration error." });
+    }
+    apiInstance.setApiKey(brevo.TransactionalEmailsApiApiKeys.apiKey, apiKey);
+
+    const mailFrom = process.env.MAIL_FROM;
+    const mailTo = process.env.MAIL_TO;
+    if (!mailFrom || !mailTo) {
+        console.error('MAIL_FROM or MAIL_TO is not set');
+        return res.status(500).json({ message: "Server configuration error." });
+    }
+
+    const sendSmtpEmail = {
+        to: [{ email: mailTo }],
+        sender: { name: "Portfolio Contact Form", email: mailFrom },
+        subject: `${name} sent you a message from Portfolio`,
+        htmlContent: `<html><body><h2>New message from portfolio</h2><p><strong>Name:</strong> ${name}</p><p><strong>Email:</strong> ${email}</p><p><strong>Message:</strong> ${message}</p></body></html>`,
+        replyTo: { email: email },
+    };
+
+    try {
+        const data = await apiInstance.sendTransacEmail(sendSmtpEmail);
+        console.log('Email sent successfully. Returned data:', JSON.stringify(data));
+        return res.status(200).json({ message: "Your message was sent successfully." });
+    } catch (error) {
+        console.error('Error sending email:', error);
+        // Log the full error object for debugging
+        console.error(JSON.stringify(error, null, 2));
+        return res.status(500).json({ message: "There was an error sending your message. Please try again later." });
     }
 }
