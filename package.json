@@ -9,8 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@getbrevo/brevo": "^2.2.0",
     "@next/font": "13.1.6",
     "@sendgrid/mail": "^7.7.0",
+    "@sendinblue/client": "^3.3.1",
     "@types/node": "18.13.0",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.10",
