@@ -1,6 +1,5 @@
-
-# Portfolio
-
+<div align="center">
+  <img src="https://github.com/shubhusion/next-portfolio/blob/master/public/portfolio-fork.png" alt="Portfolio Image" />
 <div align="center">
   &middot;
   <i>Next Portfolio built in Next.js + TypeScript + Tailwind CSS + Firebase</i>
