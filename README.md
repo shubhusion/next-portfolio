@@ -100,7 +100,3 @@ Here are the steps to run the portfolio locally.
 ## License 📄
 
 This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/shubhusion/next-portfolio/blob/main/LICENSE.md).
-
----
-
-The demo link is now updated to `http://shubhusion.vercel.app/`.
